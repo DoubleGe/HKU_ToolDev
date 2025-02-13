@@ -1,23 +1,11 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileBrush : MonoBehaviour
+public class TileBrush : PaintTool
 {
-    private Tilemap currentTilemap;
-
     [SerializeField] private Tile tempTile;
 
-    private void Awake()
-    {
-        EventManager.OnLayerChanged += LayerChanged;
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.OnLayerChanged -= LayerChanged;
-    }
-
-    private void Update()
+    public override void RunTool()
     {
         if (currentTilemap == null) return;
         if (tempTile == null) return;
@@ -30,10 +18,5 @@ public class TileBrush : MonoBehaviour
 
             currentTilemap.SetTile((Vector3Int)tilePosition, tempTile);
         }
-    }
-
-    private void LayerChanged(TileLayer tileLayer)
-    {
-        currentTilemap = tileLayer.GetTilemap();
     }
 }
