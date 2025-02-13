@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -22,13 +23,33 @@ public class TileLayer : MonoBehaviour
 
     private bool isVisible = true;
 
+    private Action<TileLayer> layerHandler;
+
+    private void Awake()
+    {
+        layerHandler = (TileLayer l) => UpdateLayerIndex();
+
+        EventManager.OnNewTileLayer += layerHandler;
+        EventManager.OnTileLayerDeleted += UpdateLayerIndex;
+        EventManager.OnLayerReorder += UpdateLayerIndex;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.OnNewTileLayer -= layerHandler;
+        EventManager.OnTileLayerDeleted -= UpdateLayerIndex;
+        EventManager.OnLayerReorder -= UpdateLayerIndex;
+
+        Destroy(connectedTilemap);
+    }
+
     public void InitTileLayerButton(Tilemap tileMap, string name)
     {
         tileMapName.text = name;
         connectedTilemap = tileMap;
         tilemapRenderer = tileMap.GetComponent<TilemapRenderer>();
 
-        tilemapRenderer.sortingOrder = transform.parent.childCount - transform.GetSiblingIndex();
+        UpdateLayerIndex();
     }
 
     public void ChangeVisibility()
@@ -43,11 +64,6 @@ public class TileLayer : MonoBehaviour
     public void LayerButtonClicked()
     {
         LayerManager.Instance.LayerSelected(this);
-    }
-
-    private void OnDestroy()
-    {
-        Destroy(connectedTilemap);
     }
 
     public void HighlightButton(TileLayer layer)
@@ -68,16 +84,22 @@ public class TileLayer : MonoBehaviour
         {
             transform.SetSiblingIndex(childIndex - 1);
             connectedTilemap.transform.SetSiblingIndex(childIndex - 1);
-            tilemapRenderer.sortingOrder = transform.parent.childCount - (childIndex - 1);
         }
         else
         {
             transform.SetSiblingIndex(childIndex + 1);
             connectedTilemap.transform.SetSiblingIndex(childIndex + 1);
-            tilemapRenderer.sortingOrder = transform.parent.childCount - (childIndex + 1);
         }
 
+        EventManager.OnLayerReorder?.Invoke();
         upButton.interactable = transform.GetSiblingIndex() != 0;
         downButton.interactable = transform.GetSiblingIndex() != transform.parent.childCount - 1;
     }
+
+    private void UpdateLayerIndex()
+    {
+        tilemapRenderer.sortingOrder = transform.parent.childCount - transform.GetSiblingIndex();
+    }
+
+    public Tilemap GetTilemap() => connectedTilemap;
 }

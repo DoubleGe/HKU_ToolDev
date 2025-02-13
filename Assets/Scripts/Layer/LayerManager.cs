@@ -39,6 +39,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         tempTileButton.InitTileLayerButton(tileMap, $"New Tilemap ({tileButtons.Count})");
 
         tileButtons.Add(tempTileButton);
+        EventManager.OnNewTileLayer?.Invoke(tempTileButton);
     }
 
     private Tilemap NewTileMap(string name)
@@ -58,13 +59,18 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons.Remove(selectedLayer);
         Destroy(selectedLayer.gameObject);
         selectedLayer = null;
+        EventManager.OnTileLayerDeleted?.Invoke();
     }
 
     public void LayerSelected(TileLayer layer)
     {
+        if (selectedLayer == layer) return;
+
         selectedLayer = layer;
 
         tileButtons.ForEach(l => l.HighlightButton(layer));
+
+        EventManager.OnLayerChanged?.Invoke(layer);
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;
