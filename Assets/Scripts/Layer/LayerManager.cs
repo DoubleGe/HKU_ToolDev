@@ -40,6 +40,7 @@ public class LayerManager : GenericSingleton<LayerManager>
 
         tileButtons.Add(tempTileButton);
         EventManager.OnNewTileLayer?.Invoke(tempTileButton);
+        LayerSelected(tempTileButton);
     }
 
     private Tilemap NewTileMap(string name)
