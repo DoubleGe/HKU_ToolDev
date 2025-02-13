@@ -34,21 +34,21 @@ public class LayerManager : GenericSingleton<LayerManager>
     {
         TileLayer tempTileButton = Instantiate(tileLayerButtonPrefab, tileLayerParent);
 
-        GameObject tileMap = NewTileMap($"New Tilemap ({tileButtons.Count})");
+        Tilemap tileMap = NewTileMap($"New Tilemap ({tileButtons.Count})");
 
         tempTileButton.InitTileLayerButton(tileMap, $"New Tilemap ({tileButtons.Count})");
 
         tileButtons.Add(tempTileButton);
     }
 
-    private GameObject NewTileMap(string name)
+    private Tilemap NewTileMap(string name)
     {
         GameObject tilemapObj = new GameObject(name);
-        tilemapObj.AddComponent<Tilemap>();
+        Tilemap tilemap = tilemapObj.AddComponent<Tilemap>();
         tilemapObj.AddComponent<TilemapRenderer>();
 
         tilemapObj.transform.SetParent(grid.transform);
-        return tilemapObj;
+        return tilemap;
     }
     
     public void RemoveLayer()
@@ -63,5 +63,9 @@ public class LayerManager : GenericSingleton<LayerManager>
     public void LayerSelected(TileLayer layer)
     {
         selectedLayer = layer;
+
+        tileButtons.ForEach(l => l.HighlightButton(layer));
     }
+
+    public TileLayer GetCurrentLayer() => selectedLayer;
 }
