@@ -13,7 +13,7 @@ public class TileFill : PaintTool
 
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>());
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f); ;
             Vector3Int startPos = new Vector3Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y), 0);
 
             if (currentTilemap.GetTile(startPos) != null) return;

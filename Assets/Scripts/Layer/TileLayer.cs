@@ -98,8 +98,9 @@ public class TileLayer : MonoBehaviour
 
     private void UpdateLayerIndex()
     {
-        tilemapRenderer.sortingOrder = transform.parent.childCount - transform.GetSiblingIndex();
+        tilemapRenderer.sortingOrder = (transform.parent.childCount - transform.GetSiblingIndex()) * 2;
     }
 
     public Tilemap GetTilemap() => connectedTilemap;
+    public int GetSortingOrder() => tilemapRenderer.sortingOrder;
 }

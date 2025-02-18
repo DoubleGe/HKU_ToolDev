@@ -13,6 +13,7 @@ public class LayerManager : GenericSingleton<LayerManager>
 
     [Header("Grid")]
     [SerializeField] private Grid grid;
+    [SerializeField] private SpriteRenderer gridViewRenderer;
 
 
     protected override void Awake()
@@ -72,6 +73,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons.ForEach(l => l.HighlightButton(layer));
 
         EventManager.OnLayerChanged?.Invoke(layer);
+        gridViewRenderer.sortingOrder = layer.GetSortingOrder() - 1;
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;

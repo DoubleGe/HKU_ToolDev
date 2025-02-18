@@ -6,7 +6,7 @@ public class TileErase : PaintTool
     {
         if (currentTilemap == null) return;
 
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>());
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f); ;
 
         if (InputHandler.controls.Player.PlaceTile.IsPressed())
         {
