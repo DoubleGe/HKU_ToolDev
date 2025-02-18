@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class TilePainter : MonoBehaviour
+public class TilePainter : GenericSingleton<TilePainter>
 {
     private PaintTool currentTool;
+    private TileBase tile;
 
     private void Update()
     {
@@ -14,5 +16,12 @@ public class TilePainter : MonoBehaviour
     public void SetTool(PaintTool tool)
     {
         currentTool = tool;
+        currentTool.SetTile(tile);
+    }
+
+    public void TileUpdate(TileBase tile)
+    {
+        this.tile = tile;
+        currentTool?.SetTile(tile);
     }
 }

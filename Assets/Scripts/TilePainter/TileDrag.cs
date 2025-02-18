@@ -3,15 +3,13 @@ using UnityEngine.Tilemaps;
 
 public class TileDrag : PaintTool
 {
-    [SerializeField] private Tile tempTile;
-
     private bool startDrag;
     private Vector2Int dragStart;
 
     public override void RunTool()
     {
         if (currentTilemap == null) return;
-        if (tempTile == null) return;
+        if (tile == null) return;
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>());
 
@@ -36,7 +34,7 @@ public class TileDrag : PaintTool
                 for (int y = startY; y <= endY; y++)
                 {
                     Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                    currentTilemap.SetTile(tilePosition, tempTile);
+                    currentTilemap.SetTile(tilePosition, tile);
                 }
             }
         }

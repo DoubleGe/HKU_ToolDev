@@ -3,14 +3,12 @@ using UnityEngine.Tilemaps;
 
 public class TileLine : PaintTool
 {
-    [SerializeField] private Tile tempTile;
-
     private bool startDrag;
     private Vector2Int dragStart;
 
     public override void RunTool()
     {
-        if (currentTilemap == null || tempTile == null) return;
+        if (currentTilemap == null || tile == null) return;
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>());
         Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
@@ -41,7 +39,7 @@ public class TileLine : PaintTool
 
         while (true)
         {
-            currentTilemap.SetTile(new Vector3Int(x, y, 0), tempTile);
+            currentTilemap.SetTile(new Vector3Int(x, y, 0), tile);
             if (x == end.x && y == end.y) break;
 
             int e2 = 2 * err;

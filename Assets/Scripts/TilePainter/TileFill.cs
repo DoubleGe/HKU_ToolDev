@@ -4,13 +4,12 @@ using UnityEngine.Tilemaps;
 
 public class TileFill : PaintTool
 {
-    [SerializeField] private Tile tempTile;
     [SerializeField] private int maxTileFill = 150;
 
     public override void RunTool()
     {
         if (currentTilemap == null) return;
-        if (tempTile == null) return;
+        if (tile == null) return;
 
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
@@ -74,7 +73,7 @@ public class TileFill : PaintTool
         while (queue.Count > 0)
         {
             Vector3Int pos = queue.Dequeue();
-            currentTilemap.SetTile(pos, tempTile);
+            currentTilemap.SetTile(pos, tile);
 
             Vector3Int[] neighbors = {
             new Vector3Int(pos.x + 1, pos.y, 0),

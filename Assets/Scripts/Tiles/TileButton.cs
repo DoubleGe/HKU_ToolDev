@@ -17,6 +17,6 @@ public class TileButton : MonoBehaviour
 
     public void TileButtonClicked()
     {
-        //Ref tile setter
+        TilePainter.Instance.TileUpdate(tile);
     }
 }

@@ -5,6 +5,7 @@ public abstract class PaintTool : MonoBehaviour
 {
     protected Tilemap currentTilemap;
     protected TilePainter tilePainter;
+    protected TileBase tile;
 
     protected virtual void Awake()
     {
@@ -26,4 +27,5 @@ public abstract class PaintTool : MonoBehaviour
     public abstract void RunTool();
 
     public void SetTool() => tilePainter.SetTool(this);
+    public void SetTile(TileBase tile) => this.tile = tile;
 }
