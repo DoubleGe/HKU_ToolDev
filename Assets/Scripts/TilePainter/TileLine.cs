@@ -8,7 +8,7 @@ public class TileLine : PaintTool
 
     public override void RunTool()
     {
-        if (currentTilemap == null || tile == null) return;
+        if (currentLayer == null || tileData == null) return;
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f); ;
         Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
@@ -39,7 +39,7 @@ public class TileLine : PaintTool
 
         while (true)
         {
-            currentTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+            currentLayer.SetTile(new Vector2Int(x, y), tileData);
             if (x == end.x && y == end.y) break;
 
             int e2 = 2 * err;

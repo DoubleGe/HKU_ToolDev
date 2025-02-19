@@ -3,9 +3,9 @@ using UnityEngine.Tilemaps;
 
 public abstract class PaintTool : MonoBehaviour
 {
-    protected Tilemap currentTilemap;
+    protected TileLayer currentLayer;
     protected TilePainter tilePainter;
-    protected TileBase tile;
+    protected CustomTileData tileData;
 
     protected virtual void Awake()
     {
@@ -21,11 +21,11 @@ public abstract class PaintTool : MonoBehaviour
 
     private void LayerChanged(TileLayer tileLayer)
     {
-        currentTilemap = tileLayer.GetTilemap();
+        currentLayer = tileLayer;
     }
 
     public abstract void RunTool();
 
     public void SetTool() => tilePainter.SetTool(this);
-    public void SetTile(TileBase tile) => this.tile = tile;
+    public void SetTile(CustomTileData tile) => this.tileData = tile;
 }

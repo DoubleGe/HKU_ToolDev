@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 public class TilePainter : GenericSingleton<TilePainter>
 {
     private PaintTool currentTool;
-    private TileBase tile;
+    private CustomTileData tileData;
 
     private void Update()
     {
@@ -16,12 +16,12 @@ public class TilePainter : GenericSingleton<TilePainter>
     public void SetTool(PaintTool tool)
     {
         currentTool = tool;
-        currentTool.SetTile(tile);
+        currentTool.SetTile(tileData);
     }
 
-    public void TileUpdate(TileBase tile)
+    public void TileUpdate(CustomTileData tile)
     {
-        this.tile = tile;
-        currentTool?.SetTile(tile);
+        this.tileData = tile;
+        currentTool?.SetTile(tileData);
     }
 }

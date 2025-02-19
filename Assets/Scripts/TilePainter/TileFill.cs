@@ -8,15 +8,15 @@ public class TileFill : PaintTool
 
     public override void RunTool()
     {
-        if (currentTilemap == null) return;
-        if (tile == null) return;
+        if (currentLayer == null) return;
+        if (tileData == null) return;
 
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f); ;
             Vector3Int startPos = new Vector3Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y), 0);
 
-            if (currentTilemap.GetTile(startPos) != null) return;
+            if (currentLayer.GetTilemap().GetTile(startPos) != null) return;
 
             //Blocks if max tile count is exceeded
             if (!CanFillArea(startPos, maxTileFill)) return;
@@ -51,7 +51,7 @@ public class TileFill : PaintTool
 
             foreach (var neighbor in neighbors)
             {
-                if (!visited.Contains(neighbor) && currentTilemap.GetTile(neighbor) == null)
+                if (!visited.Contains(neighbor) && currentLayer.GetTilemap().GetTile(neighbor) == null)
                 {
                     queue.Enqueue(neighbor);
                     visited.Add(neighbor);
@@ -73,7 +73,7 @@ public class TileFill : PaintTool
         while (queue.Count > 0)
         {
             Vector3Int pos = queue.Dequeue();
-            currentTilemap.SetTile(pos, tile);
+            currentLayer.SetTile((Vector2Int)pos, tileData);
 
             Vector3Int[] neighbors = {
             new Vector3Int(pos.x + 1, pos.y, 0),
@@ -84,7 +84,7 @@ public class TileFill : PaintTool
 
             foreach (var neighbor in neighbors)
             {
-                if (!visited.Contains(neighbor) && currentTilemap.GetTile(neighbor) == null)
+                if (!visited.Contains(neighbor) && currentLayer.GetTilemap().GetTile(neighbor) == null)
                 {
                     queue.Enqueue(neighbor);
                     visited.Add(neighbor);

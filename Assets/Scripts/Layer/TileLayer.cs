@@ -1,4 +1,6 @@
+using SimpleSaver.Intern;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -18,8 +20,10 @@ public class TileLayer : MonoBehaviour
     [SerializeField] private GameObject moveButtons;
     [SerializeField] private Button upButton, downButton;
 
+    //TileMap Data
     private Tilemap connectedTilemap;
     private TilemapRenderer tilemapRenderer;
+    private SerializableDictionary<Vector2Int, int> tileMapData;
 
     private bool isVisible = true;
 
@@ -32,6 +36,8 @@ public class TileLayer : MonoBehaviour
         EventManager.OnNewTileLayer += layerHandler;
         EventManager.OnTileLayerDeleted += UpdateLayerIndex;
         EventManager.OnLayerReorder += UpdateLayerIndex;
+
+        tileMapData = new SerializableDictionary<Vector2Int, int>();
     }
 
     private void OnDestroy()
@@ -40,7 +46,7 @@ public class TileLayer : MonoBehaviour
         EventManager.OnTileLayerDeleted -= UpdateLayerIndex;
         EventManager.OnLayerReorder -= UpdateLayerIndex;
 
-        Destroy(connectedTilemap);
+        if(connectedTilemap != null) Destroy(connectedTilemap.gameObject);
     }
 
     public void InitTileLayerButton(Tilemap tileMap, string name)
@@ -99,6 +105,19 @@ public class TileLayer : MonoBehaviour
     private void UpdateLayerIndex()
     {
         tilemapRenderer.sortingOrder = (transform.parent.childCount - transform.GetSiblingIndex()) * 2;
+    }
+
+    public void SetTile(Vector2Int position, CustomTileData tiledata)
+    {
+        connectedTilemap.SetTile((Vector3Int)position, tiledata.tile);
+
+        if (tileMapData.ContainsKey(position))
+        {
+            if(tiledata == null) tileMapData.Remove(position);
+            else tileMapData[position] = tiledata.tileID;
+            
+        }
+        else if(tiledata != null) tileMapData.Add(position, tiledata.tileID);
     }
 
     public Tilemap GetTilemap() => connectedTilemap;

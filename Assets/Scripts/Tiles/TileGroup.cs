@@ -19,4 +19,14 @@ public class TileGroup : GenericSingleton<TileGroup>
         tileButtons.Add(tempTileBtn);
     }
 
+    public void RemoveAllTileButtons()
+    {
+        for (int i = tileButtons.Count - 1; i >= 0; i--)
+        {
+            TileButton tileButton = tileButtons[i];
+
+            tileButtons.Remove(tileButton);
+            Destroy(tileButton.gameObject);
+        }
+    }
 }
