@@ -31,7 +31,7 @@ public class ProjectLoader : MonoBehaviour
 
             if (SimpleSave.FileExist(Path.Combine("Projects", folderName, "ProjectData.step")))
             {
-                validFolder.Add(folderName);
+                validFolder.Add(folderName);               
             }
         }
 

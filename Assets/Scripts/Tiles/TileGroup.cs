@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TileGroup : GenericSingleton<TileGroup> 
 {
@@ -31,4 +32,19 @@ public class TileGroup : GenericSingleton<TileGroup>
     }
 
     public List<TileButton> GetAllTiles() => tileButtons;
+
+    public void SetLoadedTiles(List<ResourceReturn> loadedTiles)
+    {
+        RemoveAllTileButtons();
+
+        loadedTiles = loadedTiles.OrderBy(t => t.tileID).ToList();
+
+        foreach (ResourceReturn rr in loadedTiles)
+        {
+            CustomTileBase tile = (CustomTileBase)ScriptableObject.CreateInstance(typeof(CustomTileBase));
+            tile.sprite = Sprite.Create(rr.texture, new Rect(0, 0, rr.texture.width, rr.texture.height), new Vector2(0, 0), Mathf.Max(rr.texture.height, rr.texture.width));
+
+            AddTileButton(tile, rr.texture);
+        }
+    }
 }

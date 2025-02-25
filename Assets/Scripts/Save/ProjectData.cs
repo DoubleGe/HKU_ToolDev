@@ -44,10 +44,21 @@ public class LayerData
     public int layerIndex;
     public SerializableDictionary<Vector2Int, int> tileMap;
 
-    public LayerData(int layerINdex,  SerializableDictionary<Vector2Int, int> tileMap)
+    public LayerData(int layerINdex, SerializableDictionary<Vector2Int, int> tileMap)
     {
         this.layerIndex = layerINdex;
         this.tileMap = tileMap;
     }
 }
 
+public class ResourceReturn
+{
+    public int tileID;
+    public Texture2D texture;
+
+    public ResourceReturn(Texture2D texture, int tileId)
+    {
+        this.tileID = tileId;
+        this.texture = texture;
+    }
+}

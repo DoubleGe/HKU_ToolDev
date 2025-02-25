@@ -13,7 +13,6 @@ public class SaveManager
         string projectPath = "Projects";
         if (!SimpleSave.FolderExist(projectPath)) SimpleSave.CreateFolder(projectPath);
 
-
         //Project Data
         string projectDataPath = Path.Combine(projectPath, projectData.projectName);
         if (!SimpleSave.FolderExist(projectDataPath)) SimpleSave.CreateFolder(projectDataPath);
@@ -49,9 +48,36 @@ public class SaveManager
         }
     }
 
-    public void LoadProject(string projectPath)
+    public bool LoadProject(string project, out ProjectData projectData, out List<ResourceReturn> resourceReturns)
     {
+        projectData = null;
+        resourceReturns = null;
 
+        string projectPath = "Projects";
+        if (!SimpleSave.FolderExist(projectPath)) return false;
+
+        string projectDataPath = Path.Combine(projectPath, project);
+        if (!SimpleSave.FolderExist(projectDataPath)) return false;
+
+        projectData = SimpleSave.LoadJson<ProjectData>(Path.Combine(projectDataPath, "ProjectData.step"));
+
+        string resourcePath = Path.Combine(projectDataPath, "Resources");
+        if (!SimpleSave.FolderExist(resourcePath)) return false;
+
+        TileResources tileResources = SimpleSave.LoadJson<TileResources>(Path.Combine(projectDataPath, "TileResources.ster"));
+
+        List<ResourceReturn> rr = new List<ResourceReturn>();
+        foreach (ResourceData tr in tileResources.tiles)
+        {
+            string tileLocation = Path.Combine(resourcePath, $"Tile-{tr.tileID}.png");
+            Texture2D texture = SimpleSave.LoadPNG(tileLocation, 1, 1);
+            texture.filterMode = tr.filterMode;
+
+            rr.Add(new ResourceReturn(texture, tr.tileID));
+        }
+        resourceReturns = rr;
+
+        return true;
     }
 }
 

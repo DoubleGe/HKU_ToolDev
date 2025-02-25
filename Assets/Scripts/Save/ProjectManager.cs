@@ -61,8 +61,15 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         saveManager.SaveProject(projectData, tileButtons, layer);
     }
 
-    public void LoadProject()
+    public void LoadProject(string projectName)
     {
+        if (saveManager == null) saveManager = new SaveManager();
 
+        if (saveManager.LoadProject(projectName, out ProjectData projectData, out List<ResourceReturn> resourceReturns))
+        {
+            this.projectData = projectData;
+
+            TileGroup.Instance.SetLoadedTiles(resourceReturns);
+        }
     }
 }
