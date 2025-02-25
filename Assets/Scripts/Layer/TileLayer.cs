@@ -109,6 +109,13 @@ public class TileLayer : MonoBehaviour
 
     public void SetTile(Vector2Int position, CustomTileData tiledata)
     {
+        if(tiledata == null)
+        {
+            connectedTilemap.SetTile((Vector3Int)position, null);
+            if(tileMapData.ContainsKey(position)) tileMapData.Remove(position);
+            return;
+        } 
+
         connectedTilemap.SetTile((Vector3Int)position, tiledata.tile);
 
         if (tileMapData.ContainsKey(position))
