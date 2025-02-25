@@ -12,10 +12,10 @@ public class TileGroup : GenericSingleton<TileGroup>
         tileButtons = new List<TileButton>();
     }
 
-    public void AddTileButton(CustomTileBase tileBase)
+    public void AddTileButton(CustomTileBase tileBase, Texture2D texture)
     {
         TileButton tempTileBtn = Instantiate(tileButtonPrefab, tileButtonParent);
-        tempTileBtn.InitTileButton(tileBase);
+        tempTileBtn.InitTileButton(tileBase, texture);
         tileButtons.Add(tempTileBtn);
     }
 
@@ -29,4 +29,6 @@ public class TileGroup : GenericSingleton<TileGroup>
             Destroy(tileButton.gameObject);
         }
     }
+
+    public List<TileButton> GetAllTiles() => tileButtons;
 }

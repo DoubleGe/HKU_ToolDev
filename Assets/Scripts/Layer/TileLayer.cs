@@ -122,4 +122,7 @@ public class TileLayer : MonoBehaviour
 
     public Tilemap GetTilemap() => connectedTilemap;
     public int GetSortingOrder() => tilemapRenderer.sortingOrder;
+
+    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData);
+    public string GetName() => tileMapName.text;
 }

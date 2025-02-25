@@ -519,6 +519,23 @@ public class SimpleSave
         return false;
     }
 
+    public static bool DeleteAllFilesInFolder(string path)
+    {
+        if (FolderExist(path))
+        {
+            string[] files = GetFiles(path);
+
+            foreach (string file in files)
+            {
+                File.Delete(file);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     #region FileDate
     /// <summary>
     /// Gets the file creation time.

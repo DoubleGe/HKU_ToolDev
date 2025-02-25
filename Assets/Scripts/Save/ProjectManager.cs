@@ -13,6 +13,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     [SerializeField] private TMP_InputField projectNameInput;
 
     private ProjectData projectData;
+    [SerializeField] private SaveManager saveManager;
 
     private GridType usedGridType;
 
@@ -24,6 +25,13 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         projectNameInput.text = "";
         creationMenu.SetActive(false);
         projectNameWindow.SetActive(true);
+    }
+
+    public void NewProjectButton()
+    {
+        startPanel.SetActive(true);
+        creationMenu.SetActive(true);
+        projectNameWindow.SetActive(false);
     }
 
     public void SetProjectName()
@@ -40,6 +48,17 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         startPanel.SetActive(false);
         creationMenu.SetActive(true);
         projectNameWindow.SetActive(false);
+    }
+
+    public void SaveProject()
+    {
+        if(saveManager == null) saveManager = new SaveManager();
+
+        List<TileButton> tileButtons = TileGroup.Instance.GetAllTiles();
+
+        List<TileLayer> layer = LayerManager.Instance.GetAllTileLayers();
+
+        saveManager.SaveProject(projectData, tileButtons, layer);
     }
 
     public void LoadProject()

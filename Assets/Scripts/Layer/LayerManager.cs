@@ -106,4 +106,5 @@ public class LayerManager : GenericSingleton<LayerManager>
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;
+    public List<TileLayer> GetAllTileLayers() => tileButtons;
 }
