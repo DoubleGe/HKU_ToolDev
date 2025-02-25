@@ -1,6 +1,8 @@
 using SFB;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.Rendering.Universal.ShaderGUI;
 using UnityEngine;
 
 //STEP = Save Tile Editor Project
@@ -48,10 +50,11 @@ public class SaveManager
         }
     }
 
-    public bool LoadProject(string project, out ProjectData projectData, out List<ResourceReturn> resourceReturns)
+    public bool LoadProject(string project, out ProjectData projectData, out List<ResourceReturn> resourceReturns, out List<LayerData> layerDatas)
     {
         projectData = null;
         resourceReturns = null;
+        layerDatas = null;
 
         string projectPath = "Projects";
         if (!SimpleSave.FolderExist(projectPath)) return false;
@@ -76,6 +79,21 @@ public class SaveManager
             rr.Add(new ResourceReturn(texture, tr.tileID));
         }
         resourceReturns = rr;
+
+        string layerPath = Path.Combine(projectDataPath, "Layers");
+        if (!SimpleSave.FolderExist(layerPath)) return false;
+
+        string[] layerFiles = SimpleSave.GetFiles(layerPath);
+
+        layerDatas = new List<LayerData>();
+        foreach(string layer in layerFiles)
+        {
+            string[] layerSplit = layer.Split('\\');
+            string layerName = layerSplit[layerSplit.Length - 1];
+
+            LayerData layerData = SimpleSave.LoadJson<LayerData>(Path.Combine(layerPath, layerName));
+            layerDatas.Add(layerData);
+        }
 
         return true;
     }

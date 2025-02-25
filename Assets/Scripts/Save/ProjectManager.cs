@@ -7,6 +7,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     [Header("Creation Menu")]
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject creationMenu;
+    [SerializeField] private GameObject loadMenu;
 
     [Header("Project Name")]
     [SerializeField] private GameObject projectNameWindow;
@@ -23,15 +24,15 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         usedGridType = (GridType)gridType;
 
         projectNameInput.text = "";
-        creationMenu.SetActive(false);
+        ResetCreationMenu();
         projectNameWindow.SetActive(true);
     }
 
     public void NewProjectButton()
     {
+        ResetCreationMenu();
         startPanel.SetActive(true);
         creationMenu.SetActive(true);
-        projectNameWindow.SetActive(false);
     }
 
     public void SetProjectName()
@@ -45,8 +46,21 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         LayerManager.Instance.SetGridType(usedGridType);
         TileGroup.Instance.RemoveAllTileButtons();
 
+        ResetCreationMenu();
+    }
+
+    public void OpenLoadWindow()
+    {
+        ResetCreationMenu();
+        startPanel.SetActive(true);
+        loadMenu.SetActive(true);
+    }
+
+    private void ResetCreationMenu()
+    {
         startPanel.SetActive(false);
         creationMenu.SetActive(true);
+        loadMenu.SetActive(false);
         projectNameWindow.SetActive(false);
     }
 
@@ -65,11 +79,14 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     {
         if (saveManager == null) saveManager = new SaveManager();
 
-        if (saveManager.LoadProject(projectName, out ProjectData projectData, out List<ResourceReturn> resourceReturns))
+        if (saveManager.LoadProject(projectName, out ProjectData projectData, out List<ResourceReturn> resourceReturns, out List<LayerData> layerData))
         {
             this.projectData = projectData;
 
             TileGroup.Instance.SetLoadedTiles(resourceReturns);
+            LayerManager.Instance.LoadLayersFromSave(layerData);
+
+            ResetCreationMenu();
         }
     }
 }

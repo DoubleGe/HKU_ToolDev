@@ -47,4 +47,6 @@ public class TileGroup : GenericSingleton<TileGroup>
             AddTileButton(tile, rr.texture);
         }
     }
+
+    public CustomTileData GetTileWithID(int id) => tileButtons.FirstOrDefault(t => t.GetCustomTile().tileID == id).GetCustomTile();
 }
