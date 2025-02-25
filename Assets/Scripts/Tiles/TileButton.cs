@@ -1,22 +1,33 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class TileButton : MonoBehaviour
 {
-    private CustomTileBase tile;
-
     [SerializeField] private Image tileImg;
-    private int tileID;
+
+    private CustomTileData tileData;
 
     public void InitTileButton(CustomTileBase tile)
     {
-        this.tile = tile;
+        tileData = new CustomTileData(tile, transform.GetSiblingIndex());
         tileImg.sprite = tile.sprite;
-        tileID = transform.GetSiblingIndex();
     }
 
     public void TileButtonClicked()
     {
-        //Ref tile setter
+        TilePainter.Instance.TileUpdate(tileData);
+    }
+}
+
+public class CustomTileData
+{
+    public int tileID;
+    public TileBase tile;
+
+    public CustomTileData(TileBase tile, int tileID)
+    {
+        this.tile = tile;
+        this.tileID = tileID;
     }
 }

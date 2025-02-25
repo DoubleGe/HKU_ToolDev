@@ -76,7 +76,7 @@ public class TileImporter : MonoBehaviour
     public void ImportTile()
     {
         CustomTileBase tile = (CustomTileBase)ScriptableObject.CreateInstance(typeof(CustomTileBase));
-        tile.sprite = Sprite.Create(loadedTexture, new Rect(0, 0, loadedTexture.width, loadedTexture.height), new Vector2(.5f, 5f));
+        tile.sprite = Sprite.Create(loadedTexture, new Rect(0, 0, loadedTexture.width, loadedTexture.height), new Vector2(0, 0), Mathf.Max(loadedTexture.height, loadedTexture.width));
 
         TileGroup.Instance.AddTileButton(tile);
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +14,7 @@ public class LayerManager : GenericSingleton<LayerManager>
 
     [Header("Grid")]
     [SerializeField] private Grid grid;
+    [SerializeField] private SpriteRenderer gridViewRenderer;
 
 
     protected override void Awake()
@@ -20,14 +22,26 @@ public class LayerManager : GenericSingleton<LayerManager>
         base.Awake();
         tileButtons = new List<TileLayer>();
 
-        if(grid == null) grid = GetComponentInChildren<Grid>();
-
-        SetGridType();
+        if (grid == null) grid = GetComponentInChildren<Grid>();
     }
 
-    public void SetGridType()
+    public void SetGridType(GridType gridType)
     {
-        grid.cellLayout = GridLayout.CellLayout.Rectangle;
+        switch (gridType)
+        {
+            case GridType.Rectangle:
+                grid.cellLayout = GridLayout.CellLayout.Rectangle;
+                break;
+            case GridType.Hex:
+                grid.cellLayout = GridLayout.CellLayout.Hexagon;
+                break;
+            case GridType.Isometric:
+                grid.cellLayout = GridLayout.CellLayout.Isometric;
+                break;
+        }
+
+        ClearLayers();
+        CreateLayer();
     }
 
     public void CreateLayer()
@@ -40,6 +54,7 @@ public class LayerManager : GenericSingleton<LayerManager>
 
         tileButtons.Add(tempTileButton);
         EventManager.OnNewTileLayer?.Invoke(tempTileButton);
+        LayerSelected(tempTileButton);
     }
 
     private Tilemap NewTileMap(string name)
@@ -51,15 +66,31 @@ public class LayerManager : GenericSingleton<LayerManager>
         tilemapObj.transform.SetParent(grid.transform);
         return tilemap;
     }
-    
+
     public void RemoveLayer()
     {
-        if (selectedLayer == null) return;
+        if (RemoveLayer(selectedLayer))
+        {
+            selectedLayer = null;
+            EventManager.OnTileLayerDeleted?.Invoke();
+        }
+    }
 
-        tileButtons.Remove(selectedLayer);
-        Destroy(selectedLayer.gameObject);
-        selectedLayer = null;
-        EventManager.OnTileLayerDeleted?.Invoke();
+    public bool RemoveLayer(TileLayer tileLayer)
+    {
+        if(tileLayer == null) return false;
+
+        tileButtons.Remove(tileLayer);
+        Destroy(tileLayer.gameObject);
+        return true;
+    }
+
+    public void ClearLayers()
+    {
+        for (int i = tileButtons.Count - 1; i >= 0; i--)
+        {
+            RemoveLayer(tileButtons[i]);
+        }
     }
 
     public void LayerSelected(TileLayer layer)
@@ -71,6 +102,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons.ForEach(l => l.HighlightButton(layer));
 
         EventManager.OnLayerChanged?.Invoke(layer);
+        gridViewRenderer.sortingOrder = layer.GetSortingOrder() - 1;
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;
