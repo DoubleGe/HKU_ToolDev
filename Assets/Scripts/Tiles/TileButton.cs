@@ -8,9 +8,9 @@ public class TileButton : MonoBehaviour
 
     private CustomTileData tileData;
 
-    public void InitTileButton(CustomTileBase tile)
+    public void InitTileButton(CustomTileBase tile, Texture2D texture)
     {
-        tileData = new CustomTileData(tile, transform.GetSiblingIndex());
+        tileData = new CustomTileData(tile, texture, transform.GetSiblingIndex());
         tileImg.sprite = tile.sprite;
     }
 
@@ -18,16 +18,20 @@ public class TileButton : MonoBehaviour
     {
         TilePainter.Instance.TileUpdate(tileData);
     }
+
+    public CustomTileData GetCustomTile() => tileData;
 }
 
 public class CustomTileData
 {
     public int tileID;
     public TileBase tile;
+    public Texture2D texture;
 
-    public CustomTileData(TileBase tile, int tileID)
+    public CustomTileData(TileBase tile, Texture2D texture, int tileID)
     {
         this.tile = tile;
+        this.texture = texture;
         this.tileID = tileID;
     }
 }

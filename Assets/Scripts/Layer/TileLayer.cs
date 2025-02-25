@@ -2,6 +2,7 @@ using SimpleSaver.Intern;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -102,6 +103,14 @@ public class TileLayer : MonoBehaviour
         downButton.interactable = transform.GetSiblingIndex() != transform.parent.childCount - 1;
     }
 
+    public void SetLayerIndex(int index)
+    {
+        transform.SetSiblingIndex(index);
+        connectedTilemap.transform.SetSiblingIndex(index);
+
+        EventManager.OnLayerReorder?.Invoke();
+    }
+
     private void UpdateLayerIndex()
     {
         tilemapRenderer.sortingOrder = (transform.parent.childCount - transform.GetSiblingIndex()) * 2;
@@ -109,6 +118,13 @@ public class TileLayer : MonoBehaviour
 
     public void SetTile(Vector2Int position, CustomTileData tiledata)
     {
+        if(tiledata == null)
+        {
+            connectedTilemap.SetTile((Vector3Int)position, null);
+            if(tileMapData.ContainsKey(position)) tileMapData.Remove(position);
+            return;
+        } 
+
         connectedTilemap.SetTile((Vector3Int)position, tiledata.tile);
 
         if (tileMapData.ContainsKey(position))
@@ -120,6 +136,20 @@ public class TileLayer : MonoBehaviour
         else if(tiledata != null) tileMapData.Add(position, tiledata.tileID);
     }
 
+    public void LoadTilemapData(SerializableDictionary<Vector2Int, int> data)
+    {
+        tileMapData = data;
+
+        foreach(KeyValuePair<Vector2Int, int> tile in tileMapData)
+        {
+            CustomTileData tileData = TileGroup.Instance.GetTileWithID(tile.Value);
+            connectedTilemap.SetTile((Vector3Int)tile.Key, tileData.tile);
+        }
+    }
+
     public Tilemap GetTilemap() => connectedTilemap;
     public int GetSortingOrder() => tilemapRenderer.sortingOrder;
+
+    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData);
+    public string GetName() => tileMapName.text;
 }

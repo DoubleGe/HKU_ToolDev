@@ -7,12 +7,14 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     [Header("Creation Menu")]
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject creationMenu;
+    [SerializeField] private GameObject loadMenu;
 
     [Header("Project Name")]
     [SerializeField] private GameObject projectNameWindow;
     [SerializeField] private TMP_InputField projectNameInput;
 
     private ProjectData projectData;
+    [SerializeField] private SaveManager saveManager;
 
     private GridType usedGridType;
 
@@ -22,8 +24,16 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         usedGridType = (GridType)gridType;
 
         projectNameInput.text = "";
-        creationMenu.SetActive(false);
+        ResetCreationMenu();
+        startPanel.SetActive(true);
         projectNameWindow.SetActive(true);
+    }
+
+    public void NewProjectButton()
+    {
+        ResetCreationMenu();
+        startPanel.SetActive(true);
+        creationMenu.SetActive(true);
     }
 
     public void SetProjectName()
@@ -37,13 +47,47 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         LayerManager.Instance.SetGridType(usedGridType);
         TileGroup.Instance.RemoveAllTileButtons();
 
+        ResetCreationMenu();
+    }
+
+    public void OpenLoadWindow()
+    {
+        ResetCreationMenu();
+        startPanel.SetActive(true);
+        loadMenu.SetActive(true);
+    }
+
+    private void ResetCreationMenu()
+    {
         startPanel.SetActive(false);
         creationMenu.SetActive(true);
+        loadMenu.SetActive(false);
         projectNameWindow.SetActive(false);
     }
 
-    public void LoadProject()
+    public void SaveProject()
     {
+        if(saveManager == null) saveManager = new SaveManager();
 
+        List<TileButton> tileButtons = TileGroup.Instance.GetAllTiles();
+
+        List<TileLayer> layer = LayerManager.Instance.GetAllTileLayers();
+
+        saveManager.SaveProject(projectData, tileButtons, layer);
+    }
+
+    public void LoadProject(string projectName)
+    {
+        if (saveManager == null) saveManager = new SaveManager();
+
+        if (saveManager.LoadProject(projectName, out ProjectData projectData, out List<ResourceReturn> resourceReturns, out List<LayerData> layerData))
+        {
+            this.projectData = projectData;
+
+            TileGroup.Instance.SetLoadedTiles(resourceReturns);
+            LayerManager.Instance.LoadLayersFromSave(layerData);
+
+            ResetCreationMenu();
+        }
     }
 }

@@ -44,7 +44,11 @@ public class LayerManager : GenericSingleton<LayerManager>
         CreateLayer();
     }
 
-    public void CreateLayer()
+
+    //Unity buttons don't like return types. I don't know why they don't just ignore them...
+    public void CreateLayerNon() => CreateLayer();
+
+    public TileLayer CreateLayer()
     {
         TileLayer tempTileButton = Instantiate(tileLayerButtonPrefab, tileLayerParent);
 
@@ -55,6 +59,8 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons.Add(tempTileButton);
         EventManager.OnNewTileLayer?.Invoke(tempTileButton);
         LayerSelected(tempTileButton);
+
+        return tempTileButton;
     }
 
     private Tilemap NewTileMap(string name)
@@ -78,7 +84,7 @@ public class LayerManager : GenericSingleton<LayerManager>
 
     public bool RemoveLayer(TileLayer tileLayer)
     {
-        if(tileLayer == null) return false;
+        if (tileLayer == null) return false;
 
         tileButtons.Remove(tileLayer);
         Destroy(tileLayer.gameObject);
@@ -106,4 +112,17 @@ public class LayerManager : GenericSingleton<LayerManager>
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;
+    public List<TileLayer> GetAllTileLayers() => tileButtons;
+
+    public void LoadLayersFromSave(List<LayerData> layerDatas)
+    {
+        ClearLayers();
+
+        foreach (LayerData layerData in layerDatas)
+        {
+            TileLayer newLayer = CreateLayer();
+            newLayer.SetLayerIndex(layerData.layerIndex);
+            newLayer.LoadTilemapData(layerData.tileMap);
+        }
+    }
 }
