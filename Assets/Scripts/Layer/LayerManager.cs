@@ -44,6 +44,8 @@ public class LayerManager : GenericSingleton<LayerManager>
         CreateLayer();
     }
 
+
+    //Unity buttons don't like return types. I don't know why they don't just ignore them...
     public void CreateLayerNon() => CreateLayer();
 
     public TileLayer CreateLayer()
@@ -114,6 +116,8 @@ public class LayerManager : GenericSingleton<LayerManager>
 
     public void LoadLayersFromSave(List<LayerData> layerDatas)
     {
+        ClearLayers();
+
         foreach (LayerData layerData in layerDatas)
         {
             TileLayer newLayer = CreateLayer();

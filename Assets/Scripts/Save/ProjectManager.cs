@@ -25,6 +25,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
 
         projectNameInput.text = "";
         ResetCreationMenu();
+        startPanel.SetActive(true);
         projectNameWindow.SetActive(true);
     }
 

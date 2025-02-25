@@ -27,7 +27,7 @@ public class TileGroup : GenericSingleton<TileGroup>
             TileButton tileButton = tileButtons[i];
 
             tileButtons.Remove(tileButton);
-            Destroy(tileButton.gameObject);
+            DestroyImmediate(tileButton.gameObject);
         }
     }
 
