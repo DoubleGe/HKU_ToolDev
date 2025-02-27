@@ -9,12 +9,11 @@ public class TileBrush : PaintTool
         if (tileData == null) return;
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f);
+        Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
 
-        if (InputHandler.controls.Player.PlaceTile.IsPressed())
-        {
-            Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
+        previewLayer.ClearPreview();
+        previewLayer.SetPreviewTile(tilePosition, tileData.tile);
 
-            currentLayer.SetTile(tilePosition, tileData);
-        }
+        if (InputHandler.controls.Player.PlaceTile.IsPressed()) currentLayer.SetTile(tilePosition, tileData);
     }
 }

@@ -15,6 +15,7 @@ public class LayerManager : GenericSingleton<LayerManager>
     [Header("Grid")]
     [SerializeField] private Grid grid;
     [SerializeField] private SpriteRenderer gridViewRenderer;
+    [SerializeField] private PreviewLayer layerPreview;
 
 
     protected override void Awake()
@@ -31,12 +32,15 @@ public class LayerManager : GenericSingleton<LayerManager>
         {
             case GridType.Rectangle:
                 grid.cellLayout = GridLayout.CellLayout.Rectangle;
+                layerPreview.SetGridType(GridLayout.CellLayout.Rectangle);
                 break;
             case GridType.Hex:
                 grid.cellLayout = GridLayout.CellLayout.Hexagon;
+                layerPreview.SetGridType(GridLayout.CellLayout.Hexagon);
                 break;
             case GridType.Isometric:
                 grid.cellLayout = GridLayout.CellLayout.Isometric;
+                layerPreview.SetGridType(GridLayout.CellLayout.Isometric);
                 break;
         }
 
