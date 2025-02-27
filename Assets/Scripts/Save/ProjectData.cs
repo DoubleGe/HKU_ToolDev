@@ -43,14 +43,17 @@ public class LayerData
 {
     public int layerIndex;
     public SerializableDictionary<Vector2Int, int> tileMap;
+    public string layerName;
 
-    public LayerData(int layerINdex, SerializableDictionary<Vector2Int, int> tileMap)
+    public LayerData(int layerINdex, SerializableDictionary<Vector2Int, int> tileMap, string layerName)
     {
         this.layerIndex = layerINdex;
         this.tileMap = tileMap;
+        this.layerName = layerName;
     }
 }
 
+[System.Serializable]
 public class ResourceReturn
 {
     public int tileID;
@@ -60,5 +63,24 @@ public class ResourceReturn
     {
         this.tileID = tileId;
         this.texture = texture;
+    }
+}
+
+[System.Serializable]
+public class LayerExport
+{
+    public int layerIndex;
+    public string layerName;
+    public int width;
+    public int height;
+    public int[] tileMap;
+
+    public LayerExport(int layerIndex, int[] tileMap, int width, int height, string layerName)
+    {
+        this.layerIndex = layerIndex;
+        this.tileMap = tileMap;
+        this.width = width;
+        this.height = height;
+        this.layerName = layerName;
     }
 }

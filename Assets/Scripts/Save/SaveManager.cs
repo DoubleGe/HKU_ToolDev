@@ -1,9 +1,9 @@
 using SFB;
-using System;
+using SimpleSaver.Intern;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Rendering.Universal.ShaderGUI;
 using UnityEngine;
+using static SimpleSave;
 
 //STEP = Save Tile Editor Project
 //STER = Save Tile Editor Resourec
@@ -97,5 +97,68 @@ public class SaveManager
 
         return true;
     }
+
+    public bool ExportProject(ProjectData projectData, List<TileButton> tiles, List<TileLayer> tileLayers)
+    {
+        //Not using SimpleSave because of full custom path.
+        string[] folderLocations = StandaloneFileBrowser.OpenFolderPanel("Export", "", false);
+        string folderLoc = folderLocations[0]; 
+
+        if (Directory.GetFiles(folderLoc).Length > 0 || Directory.GetDirectories(folderLoc).Length > 0)
+        {
+            folderLoc = Path.Combine(folderLoc, "TileEditor Export - " + projectData.projectName);
+
+            Directory.CreateDirectory(folderLoc);
+        }
+
+        SaveJson<ProjectData>(projectData, Path.Combine(folderLoc, "ProjectData.step"), SimpleSave.JSONMode.prettyprint);
+
+        string resourcePath = Path.Combine(folderLoc, "Resources");
+        if (!SimpleSave.FolderExist(resourcePath)) SimpleSave.CreateFolder(resourcePath);
+        else SimpleSave.DeleteAllFilesInFolder(resourcePath);
+
+        TileResources tileResources = new TileResources();
+        foreach (TileButton tile in tiles)
+        {
+            CustomTileData tileData = tile.GetCustomTile();
+
+            string tileLocation = $"Tile-{tileData.tileID}.png";
+            tileResources.tiles.Add(new ResourceData(tileData.tileID, tileLocation, tileData.texture.filterMode));
+
+            SavePNG(tileData.texture, Path.Combine(resourcePath, tileLocation));
+        }
+
+        SaveJson<TileResources>(tileResources, Path.Combine(folderLoc, "TileResources.ster"), SimpleSave.JSONMode.prettyprint);
+
+        string layerPath = Path.Combine(folderLoc, "Layers");
+        if (!SimpleSave.FolderExist(layerPath)) SimpleSave.CreateFolder(layerPath);
+        else SimpleSave.DeleteAllFilesInFolder(layerPath);
+
+        List<LayerExport> layerExports = LayerConverter.ConvertAllLayers(LayerConverter.ConvertTileButton(tileLayers));
+        foreach (LayerExport layer in layerExports)
+        {
+            SaveJson<LayerExport>(layer, Path.Combine(layerPath, layer.layerName + ".stel"), SimpleSave.JSONMode.prettyprint);
+        }
+
+        return true;
+    }
+
+    private void SaveJson<T>(T data, string path, JSONMode jsonMode = JSONMode.none)
+    {
+        string saveData = JsonUtility.ToJson(data, jsonMode == JSONMode.prettyprint);
+
+        if (jsonMode == JSONMode.encrypted) saveData = EncryptorDecryptor.EncryptDecrypt(saveData);
+
+        File.WriteAllText(path, saveData);
+    }
+
+    private void SavePNG(Texture2D texture2D, string path)
+    {
+        if (!Path.HasExtension(path) || Path.GetExtension(path) != ".png") path += ".png";
+
+        byte[] png = texture2D.EncodeToPNG();
+        File.WriteAllBytes(path, png);
+    }
+
 }
 

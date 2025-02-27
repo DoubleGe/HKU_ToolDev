@@ -90,4 +90,18 @@ public class ProjectManager : GenericSingleton<ProjectManager>
             ResetCreationMenu();
         }
     }
+
+    public void ExportProject()
+    {
+        if(saveManager == null) saveManager = new SaveManager();
+
+        List<TileButton> tileButtons = TileGroup.Instance.GetAllTiles();
+
+        List<TileLayer> layer = LayerManager.Instance.GetAllTileLayers();
+
+        if (saveManager.ExportProject(projectData, tileButtons, layer))
+        {
+            Debug.Log("Project exported");
+        }
+    }
 }
