@@ -6,7 +6,7 @@ using UnityEngine;
 using static SimpleSave;
 
 //STEP = Save Tile Editor Project
-//STER = Save Tile Editor Resourec
+//STER = Save Tile Editor Resource
 //STEL = Save Tile Editor Layer
 public class SaveManager
 {
@@ -114,8 +114,8 @@ public class SaveManager
         SaveJson<ProjectData>(projectData, Path.Combine(folderLoc, "ProjectData.step"), SimpleSave.JSONMode.prettyprint);
 
         string resourcePath = Path.Combine(folderLoc, "Resources");
-        if (!SimpleSave.FolderExist(resourcePath)) SimpleSave.CreateFolder(resourcePath);
-        else SimpleSave.DeleteAllFilesInFolder(resourcePath);
+        if (!Directory.Exists(resourcePath)) Directory.CreateDirectory(resourcePath);
+        else Directory.Delete(resourcePath, true);
 
         TileResources tileResources = new TileResources();
         foreach (TileButton tile in tiles)
@@ -131,8 +131,8 @@ public class SaveManager
         SaveJson<TileResources>(tileResources, Path.Combine(folderLoc, "TileResources.ster"), SimpleSave.JSONMode.prettyprint);
 
         string layerPath = Path.Combine(folderLoc, "Layers");
-        if (!SimpleSave.FolderExist(layerPath)) SimpleSave.CreateFolder(layerPath);
-        else SimpleSave.DeleteAllFilesInFolder(layerPath);
+        if (!Directory.Exists(layerPath)) Directory.CreateDirectory(layerPath);
+        else Directory.Delete(layerPath, true);
 
         List<LayerExport> layerExports = LayerConverter.ConvertAllLayers(LayerConverter.ConvertTileButton(tileLayers));
         foreach (LayerExport layer in layerExports)
