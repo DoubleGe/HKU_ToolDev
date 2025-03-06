@@ -795,6 +795,7 @@ public class SimpleSave
     public static DateTime GetFolderLastWriteTime(string path)
     {
         string folderPath = Path.Combine(GetDataPath(), path);
+        Debug.Log(folderPath);
         return Directory.GetLastWriteTime(folderPath);
     }
 

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class ProjectLoader : MonoBehaviour
@@ -22,7 +24,7 @@ public class ProjectLoader : MonoBehaviour
         }
 
         string[] foldersFound = SimpleSave.GetFolders("Projects");
-        List<string> validFolder = new List<string>();
+        List<ProjectFolder> projectFolders = new List<ProjectFolder>();
 
         foreach (string folderPath in foldersFound)
         {
@@ -31,15 +33,29 @@ public class ProjectLoader : MonoBehaviour
 
             if (SimpleSave.FileExist(Path.Combine("Projects", folderName, "ProjectData.step")))
             {
-                validFolder.Add(folderName);               
+                projectFolders.Add(new ProjectFolder(folderName, SimpleSave.GetFolderLastWriteTime(Path.Combine("Projects", folderName))));
             }
         }
 
-        validFolder.ForEach(p =>
+        projectFolders = projectFolders.OrderByDescending(f => f.editDate).ToList();
+         
+        projectFolders.ForEach(p =>
         {
             LoadButtonProject tempButotn = Instantiate(loadButtonPrefab, loadedButtonParent);
             loadedButtons.Add(tempButotn);
-            tempButotn.InitLoadButton(p, SimpleSave.GetFolderLastWriteTime(p));
+            tempButotn.InitLoadButton(p.folderName, p.editDate);
         });
+    }
+
+    private struct ProjectFolder
+    {
+        public string folderName;
+        public DateTime editDate;
+
+        public ProjectFolder(string  folderName, DateTime editDate)
+        {
+            this.folderName = folderName;
+            this.editDate = editDate;
+        }
     }
 }
