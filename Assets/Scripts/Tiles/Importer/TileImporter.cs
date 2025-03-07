@@ -20,6 +20,7 @@ public class TileImporter : MonoBehaviour
     [SerializeField] private RectTransform importOptions;
 
     private Texture2D loadedTexture;
+    private FilterMode filterMode = FilterMode.Bilinear;
 
     public void OpenFileViewer()
     {
@@ -34,6 +35,7 @@ public class TileImporter : MonoBehaviour
     private void OpenTileImportEditor(Texture2D loadedImage)
     {
         loadedTexture = loadedImage;
+        loadedTexture.filterMode = filterMode;
         LoadSprite();
 
         tileImporterWindow.gameObject.SetActive(true);
@@ -61,6 +63,7 @@ public class TileImporter : MonoBehaviour
     public void FilterOptionChanged(int option)
     {
         loadedTexture.filterMode = (FilterMode)option;
+        filterMode = (FilterMode)option;
     }
     
     public void QualityOptionChanged(int option)

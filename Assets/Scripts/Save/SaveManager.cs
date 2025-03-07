@@ -2,6 +2,7 @@ using SFB;
 using SimpleSaver.Intern;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using static SimpleSave;
 
@@ -94,6 +95,7 @@ public class SaveManager
             LayerData layerData = SimpleSave.LoadJson<LayerData>(Path.Combine(layerPath, layerName));
             layerDatas.Add(layerData);
         }
+        layerDatas = layerDatas.OrderByDescending(l => l.layerIndex).ToList();
 
         return true;
     }
