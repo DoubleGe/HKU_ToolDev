@@ -91,7 +91,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         if (tileLayer == null) return false;
 
         tileButtons.Remove(tileLayer);
-        Destroy(tileLayer.gameObject);
+        DestroyImmediate(tileLayer.gameObject);
         return true;
     }
 
@@ -112,7 +112,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons.ForEach(l => l.HighlightButton(layer));
 
         EventManager.OnLayerChanged?.Invoke(layer);
-        gridViewRenderer.sortingOrder = layer.GetSortingOrder() - 1;
+        gridViewRenderer.sortingOrder = layer.GetSortingOrder() + 1;
     }
 
     public TileLayer GetCurrentLayer() => selectedLayer;

@@ -16,7 +16,10 @@ public class TileDrag : PaintTool
 
         previewLayer.ClearPreview();
 
-        if(!startDrag) previewLayer.SetPreviewTile(tilePosition, tileData.tile);
+        //Blocks rendering of preview tile when layer is inactive.
+        if (!currentLayer.IsVisible) return;
+
+        if (!startDrag) previewLayer.SetPreviewTile(tilePosition, tileData.tile);
 
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
