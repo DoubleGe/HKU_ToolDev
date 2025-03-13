@@ -8,6 +8,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject creationMenu;
     [SerializeField] private GameObject loadMenu;
+    [SerializeField] private GameObject closeBtn;
 
     [Header("Project Name")]
     [SerializeField] private GameObject projectNameWindow;
@@ -17,6 +18,11 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     [SerializeField] private SaveManager saveManager;
 
     private GridType usedGridType;
+
+    private void Start()
+    {
+        closeBtn.SetActive(false);
+    }
 
     public void CreateNewProject() => CreateNewProject((int)usedGridType);
     public void CreateNewProject(int gridType)
@@ -34,6 +40,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         ResetCreationMenu();
         startPanel.SetActive(true);
         creationMenu.SetActive(true);
+        closeBtn.SetActive(true);
     }
 
     public void SetProjectName()
@@ -57,12 +64,25 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         loadMenu.SetActive(true);
     }
 
+    public void LoadWindowButton()
+    {
+        ResetCreationMenu();
+        startPanel.SetActive(true);
+        creationMenu.SetActive(false);
+        loadMenu.SetActive(true);
+    }
+
     private void ResetCreationMenu()
     {
         startPanel.SetActive(false);
         creationMenu.SetActive(true);
         loadMenu.SetActive(false);
         projectNameWindow.SetActive(false);
+    }
+
+    public void CloseMenu()
+    {
+        ResetCreationMenu();
     }
 
     public void SaveProject()
