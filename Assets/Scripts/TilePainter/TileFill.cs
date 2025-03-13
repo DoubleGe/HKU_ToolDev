@@ -15,6 +15,10 @@ public class TileFill : PaintTool
         Vector3Int startPos = new Vector3Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y), 0);
 
         previewLayer.ClearPreview();
+
+        //Blocks rendering of preview tile when layer is inactive.
+        if (!currentLayer.IsVisible) return;
+
         previewLayer.SetPreviewTile((Vector2Int)startPos, tileData.tile);
 
         if (currentLayer.GetTilemap().GetTile(startPos) != null) return;

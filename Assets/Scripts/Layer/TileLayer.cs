@@ -2,6 +2,7 @@ using SimpleSaver.Intern;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ public class TileLayer : MonoBehaviour
     private TilemapRenderer tilemapRenderer;
     private SerializableDictionary<Vector2Int, int> tileMapData;
 
-    private bool isVisible = true;
+    public bool IsVisible { private set; get; } = true;
 
     private Action<TileLayer> layerHandler;
 
@@ -46,7 +47,7 @@ public class TileLayer : MonoBehaviour
         EventManager.OnTileLayerDeleted -= UpdateLayerIndex;
         EventManager.OnLayerReorder -= UpdateLayerIndex;
 
-        if(connectedTilemap != null) Destroy(connectedTilemap.gameObject);
+        if (connectedTilemap != null) Destroy(connectedTilemap.gameObject);
     }
 
     public void InitTileLayerButton(Tilemap tileMap, string name)
@@ -60,11 +61,11 @@ public class TileLayer : MonoBehaviour
 
     public void ChangeVisibility()
     {
-        isVisible = !isVisible;
+        IsVisible = !IsVisible;
 
-        connectedTilemap.gameObject.SetActive(isVisible);
+        connectedTilemap.gameObject.SetActive(IsVisible);
 
-        tempVisualText.text = isVisible ? "V" : "O";
+        tempVisualText.text = IsVisible ? "V" : "O";
     }
 
     public void LayerButtonClicked()
@@ -74,12 +75,12 @@ public class TileLayer : MonoBehaviour
 
     public void HighlightButton(TileLayer layer)
     {
-        if(layer == this) layerButton.image.color = highlightColor;
+        if (layer == this) layerButton.image.color = highlightColor;
         else layerButton.image.color = normalColor;
         moveButtons.SetActive(layer == this);
 
         upButton.interactable = transform.GetSiblingIndex() != 0;
-        downButton.interactable = transform.GetSiblingIndex() != transform.parent.childCount -1;
+        downButton.interactable = transform.GetSiblingIndex() != transform.parent.childCount - 1;
     }
 
     public void MoveButton(bool moveUp)
@@ -117,29 +118,31 @@ public class TileLayer : MonoBehaviour
 
     public void SetTile(Vector2Int position, CustomTileData tiledata)
     {
-        if(tiledata == null)
+        if (!IsVisible) return;
+
+        if (tiledata == null)
         {
             connectedTilemap.SetTile((Vector3Int)position, null);
-            if(tileMapData.ContainsKey(position)) tileMapData.Remove(position);
+            if (tileMapData.ContainsKey(position)) tileMapData.Remove(position);
             return;
-        } 
+        }
 
         connectedTilemap.SetTile((Vector3Int)position, tiledata.tile);
 
         if (tileMapData.ContainsKey(position))
         {
-            if(tiledata == null) tileMapData.Remove(position);
+            if (tiledata == null) tileMapData.Remove(position);
             else tileMapData[position] = tiledata.tileID;
-            
+
         }
-        else if(tiledata != null) tileMapData.Add(position, tiledata.tileID);
+        else if (tiledata != null) tileMapData.Add(position, tiledata.tileID);
     }
 
     public void LoadTilemapData(SerializableDictionary<Vector2Int, int> data)
     {
         tileMapData = data;
 
-        foreach(KeyValuePair<Vector2Int, int> tile in tileMapData)
+        foreach (KeyValuePair<Vector2Int, int> tile in tileMapData)
         {
             CustomTileData tileData = TileGroup.Instance.GetTileWithID(tile.Value);
             connectedTilemap.SetTile((Vector3Int)tile.Key, tileData.tile);
