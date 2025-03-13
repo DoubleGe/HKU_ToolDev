@@ -91,7 +91,7 @@ public class LayerManager : GenericSingleton<LayerManager>
         if (tileLayer == null) return false;
 
         tileButtons.Remove(tileLayer);
-        Destroy(tileLayer.gameObject);
+        DestroyImmediate(tileLayer.gameObject);
         return true;
     }
 
