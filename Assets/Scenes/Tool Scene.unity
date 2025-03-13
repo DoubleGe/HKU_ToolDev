@@ -16678,6 +16678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 1909251922}
   previewTileMap: {fileID: 1928769594}
+  tileMapRender: {fileID: 1928769593}
 --- !u!1 &1920536085
 GameObject:
   m_ObjectHideFlags: 0
