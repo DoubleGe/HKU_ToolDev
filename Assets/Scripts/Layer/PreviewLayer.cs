@@ -11,11 +11,13 @@ public class PreviewLayer : MonoBehaviour
     private void Start()
     {
         EventManager.OnLayerChanged += LayerChanged;
+        EventManager.OnProjectReset += ClearPreview;
     }
 
     private void OnDestroy()
     {
         EventManager.OnLayerChanged -= LayerChanged;
+        EventManager.OnProjectReset -= ClearPreview;
     }
 
     public void SetGridType(GridLayout.CellLayout layout)

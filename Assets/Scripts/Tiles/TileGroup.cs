@@ -11,6 +11,13 @@ public class TileGroup : GenericSingleton<TileGroup>
     private void Start()
     {
         tileButtons = new List<TileButton>();
+
+        EventManager.OnProjectReset += RemoveAllTileButtons;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.OnProjectReset -= RemoveAllTileButtons;
     }
 
     public void AddTileButton(CustomTileBase tileBase, Texture2D texture)
@@ -29,6 +36,8 @@ public class TileGroup : GenericSingleton<TileGroup>
             tileButtons.Remove(tileButton);
             DestroyImmediate(tileButton.gameObject);
         }
+
+        TilePainter.Instance.TileUpdate(null);
     }
 
     public List<TileButton> GetAllTiles() => tileButtons;

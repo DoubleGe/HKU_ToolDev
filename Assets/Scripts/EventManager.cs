@@ -9,4 +9,6 @@ public class EventManager
     public static Action OnTileLayerDeleted;
 
     public static Action<TileLayer> OnLayerChanged;
+
+    public static Action OnProjectReset;
 }
