@@ -108,6 +108,8 @@ public class ProjectManager : GenericSingleton<ProjectManager>
             LayerManager.Instance.LoadLayersFromSave(layerData);
 
             ResetCreationMenu();
+
+            EventManager.OnProjectLoaded?.Invoke();
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class EventManager
 {
+    //Layer Actions
     public static Action<TileLayer> OnNewTileLayer;
     public static Action OnLayerReorder;
     public static Action OnTileLayerDeleted;
@@ -14,4 +15,7 @@ public class EventManager
     public static Action<TileLayer> OnLayerSettingsChanged;
 
     public static Action<TileLayer> OnLayerChanged;
+
+    //Project
+    public static Action OnProjectLoaded;
 }

@@ -108,6 +108,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveWorld"",
+                    ""type"": ""Value"",
+                    ""id"": ""7b2bf33d-b650-4cf5-8e51-6513dba83a5a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,61 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""PlaceTile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""9be6cb0d-d98c-4df8-ada3-d610f211c6ea"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWorld"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""fc29074f-52d9-43c1-88df-4b5462faa32a"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWorld"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e8957611-e60c-4fc8-83a3-e9180541e342"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWorld"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ee0327f9-6af7-442a-a018-3c8542f45b4f"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWorld"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5c140a2e-34e2-4944-87a8-3b0b7b825572"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveWorld"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -719,6 +783,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         m_Player_PlaceTile = m_Player.FindAction("PlaceTile", throwIfNotFound: true);
+        m_Player_MoveWorld = m_Player.FindAction("MoveWorld", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -814,6 +879,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_MousePosition;
     private readonly InputAction m_Player_PlaceTile;
+    private readonly InputAction m_Player_MoveWorld;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -833,6 +899,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/PlaceTile".
         /// </summary>
         public InputAction @PlaceTile => m_Wrapper.m_Player_PlaceTile;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MoveWorld".
+        /// </summary>
+        public InputAction @MoveWorld => m_Wrapper.m_Player_MoveWorld;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -865,6 +935,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PlaceTile.started += instance.OnPlaceTile;
             @PlaceTile.performed += instance.OnPlaceTile;
             @PlaceTile.canceled += instance.OnPlaceTile;
+            @MoveWorld.started += instance.OnMoveWorld;
+            @MoveWorld.performed += instance.OnMoveWorld;
+            @MoveWorld.canceled += instance.OnMoveWorld;
         }
 
         /// <summary>
@@ -882,6 +955,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PlaceTile.started -= instance.OnPlaceTile;
             @PlaceTile.performed -= instance.OnPlaceTile;
             @PlaceTile.canceled -= instance.OnPlaceTile;
+            @MoveWorld.started -= instance.OnMoveWorld;
+            @MoveWorld.performed -= instance.OnMoveWorld;
+            @MoveWorld.canceled -= instance.OnMoveWorld;
         }
 
         /// <summary>
@@ -1196,6 +1272,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlaceTile(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MoveWorld" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMoveWorld(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
