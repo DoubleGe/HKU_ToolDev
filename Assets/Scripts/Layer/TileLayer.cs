@@ -30,6 +30,10 @@ public class TileLayer : MonoBehaviour
 
     private Action<TileLayer> layerHandler;
 
+    //Double Click
+    private float lastClickTime;
+    private const float doubleClickThreshold = 0.3f;
+
     private void Awake()
     {
         layerHandler = (TileLayer l) => UpdateLayerIndex();
@@ -70,7 +74,13 @@ public class TileLayer : MonoBehaviour
 
     public void LayerButtonClicked()
     {
-        LayerManager.Instance.LayerSelected(this);
+        if(Time.time - lastClickTime < doubleClickThreshold)
+        {
+            EventManager.OnLayerDoubleClicked?.Invoke(this);
+        }
+
+        EventManager.OnLayerSelected?.Invoke(this);
+        lastClickTime = Time.time;
     }
 
     public void HighlightButton(TileLayer layer)
@@ -152,6 +162,12 @@ public class TileLayer : MonoBehaviour
     public Tilemap GetTilemap() => connectedTilemap;
     public int GetSortingOrder() => tilemapRenderer.sortingOrder;
 
-    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData, tileMapName.text);
+    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData, GetName(), GetOffset());
+    
+    
     public string GetName() => tileMapName.text;
+    public void SetName(string newName) => tileMapName.text = newName;
+
+    public Vector2 GetOffset() => connectedTilemap.transform.position;
+    public void SetOffset(Vector2 offset) => connectedTilemap.transform.position = offset;
 }

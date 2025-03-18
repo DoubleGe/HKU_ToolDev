@@ -11,11 +11,13 @@ public class PreviewLayer : MonoBehaviour
     private void Start()
     {
         EventManager.OnLayerChanged += LayerChanged;
+        EventManager.OnLayerSettingsChanged += LayerChanged;
     }
 
     private void OnDestroy()
     {
         EventManager.OnLayerChanged -= LayerChanged;
+        EventManager.OnLayerSettingsChanged -= LayerChanged;
     }
 
     public void SetGridType(GridLayout.CellLayout layout)
@@ -36,5 +38,6 @@ public class PreviewLayer : MonoBehaviour
     public void LayerChanged(TileLayer layer)
     {
         tileMapRender.sortingOrder = layer.GetSortingOrder() + 1;
+        previewTileMap.transform.position = layer.GetOffset();
     }
 }

@@ -11,7 +11,7 @@ public class TileFill : PaintTool
         if (currentLayer == null) return;
         if (tileData == null) return;
 
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f); ;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f) - (Vector3)currentLayer.GetOffset();
         Vector3Int startPos = new Vector3Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y), 0);
 
         previewLayer.ClearPreview();

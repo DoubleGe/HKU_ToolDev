@@ -44,12 +44,14 @@ public class LayerData
     public int layerIndex;
     public SerializableDictionary<Vector2Int, int> tileMap;
     public string layerName;
+    public Vector2 offset;
 
-    public LayerData(int layerINdex, SerializableDictionary<Vector2Int, int> tileMap, string layerName)
+    public LayerData(int layerINdex, SerializableDictionary<Vector2Int, int> tileMap, string layerName, Vector2 offset)
     {
         this.layerIndex = layerINdex;
         this.tileMap = tileMap;
         this.layerName = layerName;
+        this.offset = offset;
     }
 }
 
