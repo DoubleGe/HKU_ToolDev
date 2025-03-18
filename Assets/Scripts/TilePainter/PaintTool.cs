@@ -29,6 +29,6 @@ public abstract class PaintTool : MonoBehaviour
 
     public abstract void RunTool();
 
-    public void SetTool() => tilePainter.SetTool(this);
+    public virtual void SetTool() => tilePainter.SetTool(this);
     public void SetTile(CustomTileData tile) => this.tileData = tile;
 }

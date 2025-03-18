@@ -78,7 +78,7 @@ public class TileLayer : MonoBehaviour
 
     public void LayerButtonClicked()
     {
-        if(Time.time - lastClickTime < doubleClickThreshold)
+        if (Time.time - lastClickTime < doubleClickThreshold)
         {
             EventManager.OnLayerDoubleClicked?.Invoke(this);
         }
@@ -150,6 +150,12 @@ public class TileLayer : MonoBehaviour
 
         }
         else if (tiledata != null) tileMapData.Add(position, tiledata.tileID);
+    }
+
+    public int GetTile(Vector2Int position)
+    {
+        if (tileMapData.ContainsKey(position)) return tileMapData[position];
+        else return -1;
     }
 
     public void LoadTilemapData(SerializableDictionary<Vector2Int, int> data)
