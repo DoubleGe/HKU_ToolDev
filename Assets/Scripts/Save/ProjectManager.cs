@@ -57,7 +57,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         projectData.gridType = usedGridType;
 
         LayerManager.Instance.SetGridType(usedGridType);
-        TileGroup.Instance.RemoveAllTileButtons();
+        EventManager.OnProjectReset?.Invoke();
 
         ResetCreationMenu();
         allowInput.value = true;

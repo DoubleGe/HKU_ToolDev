@@ -162,13 +162,16 @@ public class SimpleSave
     /// <typeparam name="T">The data type you want to load.</typeparam>
     /// <param name="path">The path you want your data to be loaded from (Use SetDataPath to set the main path)</param>
     /// <returns>Returns the given data type.</returns>
-    public static T LoadJson<T>(string path)
+    public static T LoadJson<T>(string path, bool isEncrypted = false)
     {
         string loadPath = ValidatePath(path);
 
         if (File.Exists(loadPath))
         {
             string allFileText = File.ReadAllText(loadPath);
+
+            if(isEncrypted) allFileText = EncryptorDecryptor.EncryptDecrypt(allFileText);
+
             T data = JsonUtility.FromJson<T>(allFileText);
             return data;
         }

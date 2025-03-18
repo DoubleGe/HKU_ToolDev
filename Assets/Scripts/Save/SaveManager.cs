@@ -20,7 +20,7 @@ public class SaveManager
         string projectDataPath = Path.Combine(projectPath, projectData.projectName);
         if (!SimpleSave.FolderExist(projectDataPath)) SimpleSave.CreateFolder(projectDataPath);
 
-        SimpleSave.SaveJson<ProjectData>(projectData, Path.Combine(projectDataPath, "ProjectData.step"), SimpleSave.JSONMode.prettyprint);
+        SimpleSave.SaveJson<ProjectData>(projectData, Path.Combine(projectDataPath, "ProjectData.step"), SimpleSave.JSONMode.encrypted);
 
         //Tile Resources
         string resourcePath = Path.Combine(projectDataPath, "Resources");
@@ -38,7 +38,7 @@ public class SaveManager
             SimpleSave.SavePNG(tileData.texture, Path.Combine(resourcePath, tileLocation));
         }
 
-        SimpleSave.SaveJson<TileResources>(tileResources, Path.Combine(projectDataPath, "TileResources.ster"), SimpleSave.JSONMode.prettyprint);
+        SimpleSave.SaveJson<TileResources>(tileResources, Path.Combine(projectDataPath, "TileResources.ster"), SimpleSave.JSONMode.encrypted);
 
         //Layers
         string layerPath = Path.Combine(projectDataPath, "Layers");
@@ -47,7 +47,7 @@ public class SaveManager
 
         foreach (TileLayer layer in tileLayers)
         {
-            SimpleSave.SaveJson<LayerData>(layer.GetLayerData(), Path.Combine(layerPath, layer.GetName() + ".stel"), SimpleSave.JSONMode.prettyprint);
+            SimpleSave.SaveJson<LayerData>(layer.GetLayerData(), Path.Combine(layerPath, layer.GetName() + ".stel"), SimpleSave.JSONMode.encrypted);
         }
     }
 
@@ -63,12 +63,12 @@ public class SaveManager
         string projectDataPath = Path.Combine(projectPath, project);
         if (!SimpleSave.FolderExist(projectDataPath)) return false;
 
-        projectData = SimpleSave.LoadJson<ProjectData>(Path.Combine(projectDataPath, "ProjectData.step"));
+        projectData = SimpleSave.LoadJson<ProjectData>(Path.Combine(projectDataPath, "ProjectData.step"), true);
 
         string resourcePath = Path.Combine(projectDataPath, "Resources");
         if (!SimpleSave.FolderExist(resourcePath)) return false;
 
-        TileResources tileResources = SimpleSave.LoadJson<TileResources>(Path.Combine(projectDataPath, "TileResources.ster"));
+        TileResources tileResources = SimpleSave.LoadJson<TileResources>(Path.Combine(projectDataPath, "TileResources.ster"), true);
 
         List<ResourceReturn> rr = new List<ResourceReturn>();
         foreach (ResourceData tr in tileResources.tiles)
@@ -92,7 +92,7 @@ public class SaveManager
             string[] layerSplit = layer.Split('\\');
             string layerName = layerSplit[layerSplit.Length - 1];
 
-            LayerData layerData = SimpleSave.LoadJson<LayerData>(Path.Combine(layerPath, layerName));
+            LayerData layerData = SimpleSave.LoadJson<LayerData>(Path.Combine(layerPath, layerName), true);
             layerDatas.Add(layerData);
         }
         layerDatas = layerDatas.OrderByDescending(l => l.layerIndex).ToList();

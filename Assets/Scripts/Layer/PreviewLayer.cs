@@ -11,6 +11,7 @@ public class PreviewLayer : MonoBehaviour
     private void Start()
     {
         EventManager.OnLayerChanged += LayerChanged;
+        EventManager.OnProjectReset += ClearPreview;
         EventManager.OnLayerSettingsChanged += LayerChanged;
     }
 
@@ -18,6 +19,7 @@ public class PreviewLayer : MonoBehaviour
     {
         EventManager.OnLayerChanged -= LayerChanged;
         EventManager.OnLayerSettingsChanged -= LayerChanged;
+        EventManager.OnProjectReset -= ClearPreview;
     }
 
     public void SetGridType(GridLayout.CellLayout layout)

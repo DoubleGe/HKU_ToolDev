@@ -18,4 +18,5 @@ public class EventManager
 
     //Project
     public static Action OnProjectLoaded;
+    public static Action OnProjectReset;
 }
