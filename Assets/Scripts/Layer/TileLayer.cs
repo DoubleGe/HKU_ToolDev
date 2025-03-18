@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class TileLayer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI tileMapName;
-    [SerializeField] private TextMeshProUGUI tempVisualText;
 
     [Header("Selected")]
     [SerializeField] private Button layerButton;
@@ -20,6 +19,11 @@ public class TileLayer : MonoBehaviour
     [Header("Tilemap Move")]
     [SerializeField] private GameObject moveButtons;
     [SerializeField] private Button upButton, downButton;
+
+    [Header("View Icons")]
+    [SerializeField] private Image viewIcon;
+    [SerializeField] private Sprite vissibleIcon;
+    [SerializeField] private Sprite hiddenIcon;
 
     //TileMap Data
     private Tilemap connectedTilemap;
@@ -69,7 +73,7 @@ public class TileLayer : MonoBehaviour
 
         connectedTilemap.gameObject.SetActive(IsVisible);
 
-        tempVisualText.text = IsVisible ? "V" : "O";
+        viewIcon.sprite = IsVisible ? vissibleIcon : hiddenIcon;
     }
 
     public void LayerButtonClicked()
