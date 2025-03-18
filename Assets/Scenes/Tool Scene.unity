@@ -18492,6 +18492,7 @@ GameObject:
   - component: {fileID: 1862974864}
   - component: {fileID: 1862974863}
   - component: {fileID: 1862974862}
+  - component: {fileID: 1862974865}
   m_Layer: 5
   m_Name: Project name Input
   m_TagString: Untagged
@@ -18598,7 +18599,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1862974865}
+        m_TargetAssemblyTypeName: RichFilter, Assembly-CSharp
+        m_MethodName: UpdateText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -18658,6 +18671,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862974860}
   m_CullTransparentMesh: 1
+--- !u!114 &1862974865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862974860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e597cb13494a10468f1e6536f5e5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1862974862}
 --- !u!1 &1865144623
 GameObject:
   m_ObjectHideFlags: 0
