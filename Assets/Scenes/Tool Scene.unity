@@ -2639,6 +2639,7 @@ MonoBehaviour:
   layerNameInput: {fileID: 776951067}
   layerOffsetX: {fileID: 1113773154}
   layerOffsetY: {fileID: 59118776}
+  allowInput: {fileID: 11400000, guid: 3d0b048d2d7a83143b249011763e2beb, type: 2}
 --- !u!1 &188902669
 GameObject:
   m_ObjectHideFlags: 0
@@ -9264,6 +9265,7 @@ GameObject:
   - component: {fileID: 776951069}
   - component: {fileID: 776951068}
   - component: {fileID: 776951067}
+  - component: {fileID: 776951070}
   m_Layer: 5
   m_Name: Rename Field
   m_TagString: Untagged
@@ -9370,7 +9372,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 776951070}
+        m_TargetAssemblyTypeName: RichFilter, Assembly-CSharp
+        m_MethodName: UpdateText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9430,6 +9444,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776951065}
   m_CullTransparentMesh: 1
+--- !u!114 &776951070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776951065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e597cb13494a10468f1e6536f5e5e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 776951067}
 --- !u!1 &793888561
 GameObject:
   m_ObjectHideFlags: 0

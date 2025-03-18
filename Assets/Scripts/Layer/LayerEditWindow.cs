@@ -11,6 +11,8 @@ public class LayerEditWindow : MonoBehaviour
     [SerializeField] private TMP_InputField layerOffsetX;
     [SerializeField] private TMP_InputField layerOffsetY;
 
+    [Space(10)]
+    [SerializeField] private SharedBoolScriptable allowInput;
 
     private void Start()
     {
@@ -33,9 +35,14 @@ public class LayerEditWindow : MonoBehaviour
         layerOffsetY.text = layer.GetOffset().y.ToString();
 
         layerEditorPanel.SetActive(true);
+        allowInput.value = false;
     }
 
-    public void CancelButton() => layerEditorPanel.SetActive(false);
+    public void CancelButton()
+    {
+        allowInput.value = true;
+        layerEditorPanel.SetActive(false);
+    }
 
     public void ChangeButton()
     {
@@ -50,6 +57,6 @@ public class LayerEditWindow : MonoBehaviour
 
         EventManager.OnLayerSettingsChanged?.Invoke(layerToEdit);
 
-        layerEditorPanel.SetActive(false);
+        CancelButton();
     }
 }
