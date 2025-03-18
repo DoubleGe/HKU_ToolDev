@@ -12,7 +12,9 @@ public class TileBrush : PaintTool
         Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
 
         previewLayer.ClearPreview();
-        
+
+        if (IsPointerOverUIObject()) return;
+
         //Blocks rendering of preview tile when layer is inactive.
         if (!currentLayer.IsVisible) return;
 

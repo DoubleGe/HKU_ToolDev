@@ -18,6 +18,8 @@ public class TilePicker : PaintTool
     {
         if (currentLayer == null) return;
 
+        if (IsPointerOverUIObject()) return;
+
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f) - (Vector3)currentLayer.GetOffset();

@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float dragSpeed = 5f;
 
+    [SerializeField] private SharedBoolScriptable allowInput;
+
     private void Start()
     {
         EventManager.OnProjectLoaded += OnProjectLoaded;
@@ -14,6 +16,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (!allowInput.value) return;
+
         Vector2 keyboardInput = InputHandler.controls.Player.MoveWorld.ReadValue<Vector2>();
 
         transform.position += (Vector3)keyboardInput * moveSpeed * Time.deltaTime;

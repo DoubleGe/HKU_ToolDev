@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210647b39bc683e4996313bbf8c3d5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowInput: {fileID: 11400000, guid: 3d0b048d2d7a83143b249011763e2beb, type: 2}
   tileImporterWindow: {fileID: 336790122}
   tileViewer: {fileID: 1811785894}
   tileMapOptions: {fileID: 2080478051}
@@ -5330,6 +5331,7 @@ MonoBehaviour:
   closeBtn: {fileID: 2142711284}
   projectNameWindow: {fileID: 340338811}
   projectNameInput: {fileID: 1862974862}
+  allowInput: {fileID: 11400000, guid: 3d0b048d2d7a83143b249011763e2beb, type: 2}
 --- !u!1 &443088204
 GameObject:
   m_ObjectHideFlags: 0
@@ -6696,6 +6698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   dragSpeed: 5
+  allowInput: {fileID: 11400000, guid: 3d0b048d2d7a83143b249011763e2beb, type: 2}
 --- !u!1 &521566860
 GameObject:
   m_ObjectHideFlags: 0
@@ -20543,22 +20546,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 443088204}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 663256005}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 429460355}
+        m_TargetAssemblyTypeName: ProjectManager, Assembly-CSharp
+        m_MethodName: CloseProjectWindow
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

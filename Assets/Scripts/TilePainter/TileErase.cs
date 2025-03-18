@@ -14,6 +14,8 @@ public class TileErase : PaintTool
 
         previewLayer.ClearPreview();
 
+        if (IsPointerOverUIObject()) return;
+
         if (InputHandler.controls.Player.PlaceTile.triggered)
         {
             startDrag = true;

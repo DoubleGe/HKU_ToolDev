@@ -16,6 +16,8 @@ public class TileDrag : PaintTool
 
         previewLayer.ClearPreview();
 
+        if (IsPointerOverUIObject()) return;
+
         //Blocks rendering of preview tile when layer is inactive.
         if (!currentLayer.IsVisible) return;
 
