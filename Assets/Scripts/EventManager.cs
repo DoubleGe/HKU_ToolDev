@@ -19,6 +19,9 @@ public class EventManager
     //Tool
     public static Action OnToolSelected;
 
+    //Tiles
+    public static Action OnTileSelected;
+
     //Project
     public static Action OnProjectLoaded;
     public static Action OnProjectReset;
