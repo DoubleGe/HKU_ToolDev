@@ -16,6 +16,9 @@ public class EventManager
 
     public static Action<TileLayer> OnLayerChanged;
 
+    //Tool
+    public static Action OnToolSelected;
+
     //Project
     public static Action OnProjectLoaded;
     public static Action OnProjectReset;

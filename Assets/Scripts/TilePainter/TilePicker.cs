@@ -33,7 +33,7 @@ public class TilePicker : PaintTool
 
             if (prevTool != null)
             {
-                tilePainter.SetTool(prevTool);
+                prevTool.SetTool();
                 prevTool = null;
             }
         }
