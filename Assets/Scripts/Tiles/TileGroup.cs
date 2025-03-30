@@ -57,5 +57,10 @@ public class TileGroup : GenericSingleton<TileGroup>
         }
     }
 
+    public void SetTile(CustomTileData tileData)
+    {
+        TilePainter.Instance.TileUpdate(tileData);
+    }
+
     public CustomTileData GetTileWithID(int id) => tileButtons.FirstOrDefault(t => t.GetCustomTile().tileID == id).GetCustomTile();
 }

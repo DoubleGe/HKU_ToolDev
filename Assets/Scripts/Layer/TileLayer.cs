@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class TileLayer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI tileMapName;
-    [SerializeField] private TextMeshProUGUI tempVisualText;
 
     [Header("Selected")]
     [SerializeField] private Button layerButton;
@@ -21,6 +20,11 @@ public class TileLayer : MonoBehaviour
     [SerializeField] private GameObject moveButtons;
     [SerializeField] private Button upButton, downButton;
 
+    [Header("View Icons")]
+    [SerializeField] private Image viewIcon;
+    [SerializeField] private Sprite vissibleIcon;
+    [SerializeField] private Sprite hiddenIcon;
+
     //TileMap Data
     private Tilemap connectedTilemap;
     private TilemapRenderer tilemapRenderer;
@@ -29,6 +33,10 @@ public class TileLayer : MonoBehaviour
     public bool IsVisible { private set; get; } = true;
 
     private Action<TileLayer> layerHandler;
+
+    //Double Click
+    private float lastClickTime;
+    private const float doubleClickThreshold = 0.3f;
 
     private void Awake()
     {
@@ -65,12 +73,18 @@ public class TileLayer : MonoBehaviour
 
         connectedTilemap.gameObject.SetActive(IsVisible);
 
-        tempVisualText.text = IsVisible ? "V" : "O";
+        viewIcon.sprite = IsVisible ? vissibleIcon : hiddenIcon;
     }
 
     public void LayerButtonClicked()
     {
-        LayerManager.Instance.LayerSelected(this);
+        if (Time.time - lastClickTime < doubleClickThreshold)
+        {
+            EventManager.OnLayerDoubleClicked?.Invoke(this);
+        }
+
+        EventManager.OnLayerSelected?.Invoke(this);
+        lastClickTime = Time.time;
     }
 
     public void HighlightButton(TileLayer layer)
@@ -138,6 +152,12 @@ public class TileLayer : MonoBehaviour
         else if (tiledata != null) tileMapData.Add(position, tiledata.tileID);
     }
 
+    public int GetTile(Vector2Int position)
+    {
+        if (tileMapData.ContainsKey(position)) return tileMapData[position];
+        else return -1;
+    }
+
     public void LoadTilemapData(SerializableDictionary<Vector2Int, int> data)
     {
         tileMapData = data;
@@ -152,6 +172,12 @@ public class TileLayer : MonoBehaviour
     public Tilemap GetTilemap() => connectedTilemap;
     public int GetSortingOrder() => tilemapRenderer.sortingOrder;
 
-    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData, tileMapName.text);
+    public LayerData GetLayerData() => new LayerData(GetSortingOrder(), tileMapData, GetName(), GetOffset());
+    
+    
     public string GetName() => tileMapName.text;
+    public void SetName(string newName) => tileMapName.text = newName;
+
+    public Vector2 GetOffset() => connectedTilemap.transform.position;
+    public void SetOffset(Vector2 offset) => connectedTilemap.transform.position = offset;
 }

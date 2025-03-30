@@ -12,11 +12,13 @@ public class PreviewLayer : MonoBehaviour
     {
         EventManager.OnLayerChanged += LayerChanged;
         EventManager.OnProjectReset += ClearPreview;
+        EventManager.OnLayerSettingsChanged += LayerChanged;
     }
 
     private void OnDestroy()
     {
         EventManager.OnLayerChanged -= LayerChanged;
+        EventManager.OnLayerSettingsChanged -= LayerChanged;
         EventManager.OnProjectReset -= ClearPreview;
     }
 
@@ -38,5 +40,6 @@ public class PreviewLayer : MonoBehaviour
     public void LayerChanged(TileLayer layer)
     {
         tileMapRender.sortingOrder = layer.GetSortingOrder() + 1;
+        previewTileMap.transform.position = layer.GetOffset();
     }
 }

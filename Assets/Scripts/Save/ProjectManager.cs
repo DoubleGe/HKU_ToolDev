@@ -19,9 +19,13 @@ public class ProjectManager : GenericSingleton<ProjectManager>
 
     private GridType usedGridType;
 
+    [SerializeField] private SharedBoolScriptable allowInput;
+    private bool opendLoadViaButton;
+
     private void Start()
     {
         closeBtn.SetActive(false);
+        allowInput.value = false;
     }
 
     public void CreateNewProject() => CreateNewProject((int)usedGridType);
@@ -41,6 +45,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         startPanel.SetActive(true);
         creationMenu.SetActive(true);
         closeBtn.SetActive(true);
+        allowInput.value = false;
     }
 
     public void SetProjectName()
@@ -55,6 +60,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         EventManager.OnProjectReset?.Invoke();
 
         ResetCreationMenu();
+        allowInput.value = true;
     }
 
     public void OpenLoadWindow()
@@ -62,6 +68,7 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         ResetCreationMenu();
         startPanel.SetActive(true);
         loadMenu.SetActive(true);
+        opendLoadViaButton = false;
     }
 
     public void LoadWindowButton()
@@ -70,6 +77,8 @@ public class ProjectManager : GenericSingleton<ProjectManager>
         startPanel.SetActive(true);
         creationMenu.SetActive(false);
         loadMenu.SetActive(true);
+        allowInput.value = false;
+        opendLoadViaButton = true;
     }
 
     private void ResetCreationMenu()
@@ -83,11 +92,23 @@ public class ProjectManager : GenericSingleton<ProjectManager>
     public void CloseMenu()
     {
         ResetCreationMenu();
+        allowInput.value = true;
+    }
+
+    public void CloseProjectWindow()
+    {
+        ResetCreationMenu();
+        if (opendLoadViaButton) allowInput.value = true;
+        else
+        {
+            startPanel.SetActive(true);
+            creationMenu.SetActive(true);
+        }
     }
 
     public void SaveProject()
     {
-        if(saveManager == null) saveManager = new SaveManager();
+        if (saveManager == null) saveManager = new SaveManager();
 
         List<TileButton> tileButtons = TileGroup.Instance.GetAllTiles();
 
@@ -108,12 +129,16 @@ public class ProjectManager : GenericSingleton<ProjectManager>
             LayerManager.Instance.LoadLayersFromSave(layerData);
 
             ResetCreationMenu();
+
+            EventManager.OnProjectLoaded?.Invoke();
+
+            allowInput.value = true;
         }
     }
 
     public void ExportProject()
     {
-        if(saveManager == null) saveManager = new SaveManager();
+        if (saveManager == null) saveManager = new SaveManager();
 
         List<TileButton> tileButtons = TileGroup.Instance.GetAllTiles();
 

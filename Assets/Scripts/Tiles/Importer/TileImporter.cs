@@ -11,6 +11,8 @@ public enum ImportType
 
 public class TileImporter : MonoBehaviour
 {
+    [SerializeField] private SharedBoolScriptable allowInput;
+
     [Header("Tile Importer")]
     [SerializeField] private RectTransform tileImporterWindow;
     [SerializeField] private Image tileViewer;
@@ -34,6 +36,8 @@ public class TileImporter : MonoBehaviour
 
     private void OpenTileImportEditor(Texture2D loadedImage)
     {
+        allowInput.value = false;
+
         loadedTexture = loadedImage;
         loadedTexture.filterMode = filterMode;
         LoadSprite();
@@ -74,6 +78,7 @@ public class TileImporter : MonoBehaviour
     public void CloseImporter()
     {
         tileImporterWindow.gameObject.SetActive(false);
+        allowInput.value = true;
     }
 
     public void ImportTile()
@@ -83,6 +88,6 @@ public class TileImporter : MonoBehaviour
 
         TileGroup.Instance.AddTileButton(tile, loadedTexture);
 
-        tileImporterWindow.gameObject.SetActive(false);
+        CloseImporter();
     }
 }

@@ -11,10 +11,12 @@ public class TileDrag : PaintTool
         if (currentLayer == null) return;
         if (tileData == null) return;
 
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f);
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(InputHandler.controls.Player.MousePosition.ReadValue<Vector2>()) - new Vector3(.5f, .5f) - (Vector3)currentLayer.GetOffset();
         Vector2Int tilePosition = new Vector2Int(Mathf.FloorToInt(mousePosition.x), Mathf.FloorToInt(mousePosition.y));
 
         previewLayer.ClearPreview();
+
+        if (IsPointerOverUIObject()) return;
 
         //Blocks rendering of preview tile when layer is inactive.
         if (!currentLayer.IsVisible) return;

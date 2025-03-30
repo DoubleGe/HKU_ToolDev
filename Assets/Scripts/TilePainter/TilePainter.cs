@@ -19,6 +19,8 @@ public class TilePainter : GenericSingleton<TilePainter>
         currentTool.SetTile(tileData);
     }
 
+    public PaintTool GetTool() => currentTool;
+
     public void TileUpdate(CustomTileData tile)
     {
         this.tileData = tile;

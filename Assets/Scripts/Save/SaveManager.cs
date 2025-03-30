@@ -104,6 +104,9 @@ public class SaveManager
     {
         //Not using SimpleSave because of full custom path.
         string[] folderLocations = StandaloneFileBrowser.OpenFolderPanel("Export", "", false);
+        
+        if (folderLocations == null || folderLocations.Length == 0) return false;
+
         string folderLoc = folderLocations[0]; 
 
         if (Directory.GetFiles(folderLoc).Length > 0 || Directory.GetDirectories(folderLoc).Length > 0)

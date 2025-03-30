@@ -24,6 +24,13 @@ public class LayerManager : GenericSingleton<LayerManager>
         tileButtons = new List<TileLayer>();
 
         if (grid == null) grid = GetComponentInChildren<Grid>();
+
+        EventManager.OnLayerSelected += LayerSelected;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.OnLayerSelected -= LayerSelected;
     }
 
     public void SetGridType(GridType gridType)
@@ -125,6 +132,8 @@ public class LayerManager : GenericSingleton<LayerManager>
         foreach (LayerData layerData in layerDatas)
         {
             TileLayer newLayer = CreateLayer();
+            newLayer.SetName(layerData.layerName);
+            newLayer.SetOffset(layerData.offset);
             newLayer.SetLayerIndex(layerData.layerIndex);
             newLayer.LoadTilemapData(layerData.tileMap);
         }
